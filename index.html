@@ -35,29 +35,39 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
-                        Start Bootstrap
+                        OrnithoLOG
                     </a>
                 </li>
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="#intro">Introduction</a>
                 </li>
                 <li>
-                    <a href="#">Shortcuts</a>
+                    <a href="#api">API</a>
+                    <ul>
+                        <li>
+                            <a href="#log-level">Niveau de log</a>
+                        </li>
+                        <li>
+                            <a href="#log-format">Formatter de log</a>
+                        </li>
+                        <li>
+                            <a href="#log-target">Cibles des log</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <a href="#">Overview</a>
+                    <a href="#config">Configuration du framework</a>
+                        <ul>
+                            <li>
+                                <a href="#properties">Fichier .properties</a>
+                            </li>
+                        </ul>
                 </li>
                 <li>
-                    <a href="#">Events</a>
+                    <a href="#uml">UML</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
+                    <a href="#license">Licence</a>
                 </li>
             </ul>
         </div>
@@ -68,10 +78,49 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Simple Sidebar</h1>
-                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+
+                        <div style="text-align: center;">
+                            <img src="https://drive.google.com/uc?export=view&#38;id=0B31-CIvNW1LdVFJrMUZIOHBueVU" width="200px"></div>
+                        </div>
+
+                        <h1 id="intro">Introduction</h1>
+
+                        <p>OrnithoLog est un <strong>framework de logging</strong>, dont le but est de mettre à disposition un système simple pour <strong>gérer les messages d’erreur</strong> et comprendre le flux d’exécution d’un programme.</p>
+                        
+                        <h1 id="api">API</h1>
+
+                            <h2 id="log-level">Niveau des logs</h2>
+
+                            <h2 id="log-format">Format des logs</h2>
+
+                            <h2 id="log-target">Cible des logs</h2>
+
+                            <p>Un même message peut donner lieu à plusieurs cibles:
+
+                            <ul>
+                                <li>Console</li>
+                                <li>Fichier</li>
+                                <li>Base de données</li>
+                                <li>...</li>
+                            </ul>
+
+                        <h1 id="config">Configuration du framework</h1>
+
+                            <h2 id="properties">Fichier .properties</h2>
+
+                        <h1 id="uml">UML</h1>
+
+                        <h1 id="license">Licence</h1>
+
+                        <p>TODO: choisir une licence.</p>
+
+                            <h2>Auteurs</h2>
+
+                            <ul>
+                                <li>Vincent Marquet</li>
+                                <li>Patrick Pereira Almeida</li>
+                                <li>Yann Privé</li>
+                            </ul>
                     </div>
                 </div>
             </div>
@@ -86,14 +135,6 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
 
 </body>
 
