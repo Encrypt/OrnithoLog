@@ -4,13 +4,17 @@ import com.github.encrypt.ornitholog.Logger;
 
 
 public class ClassFormatter extends LogFormatter {
+
+	protected Logger logger;
 	
 	public ClassFormatter(Logger logger) {
-		super(logger);
+		super();
+		this.logger = logger;
 	}
 
-	public ClassFormatter(Logger logger, LogFormatter formatter) {
-		super(logger, formatter);
+	public ClassFormatter(LogFormatter formatter, Logger logger) {
+		super(formatter);
+		this.logger = logger;
 	}
 
 	public String appendToMessage(String message) {

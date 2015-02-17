@@ -1,19 +1,13 @@
 package com.github.encrypt.ornitholog.formatters;
 
-import com.github.encrypt.ornitholog.Logger;
-
 
 public abstract class LogFormatter {
 
-	protected Logger logger;
 	private LogFormatter formatter;
 
-	public LogFormatter(Logger logger) {
-		this.logger = logger;
-	}
+	public LogFormatter() {}
 
-	public LogFormatter(Logger logger, LogFormatter formatter) {
-		this.logger = logger;
+	public LogFormatter(LogFormatter formatter) {
 		this.formatter = formatter;
 	}
 

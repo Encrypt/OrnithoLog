@@ -1,18 +1,16 @@
 package com.github.encrypt.ornitholog.formatters;
 
-import com.github.encrypt.ornitholog.Logger;
-
 import java.util.Date;
 
 
 public class DateFormatter extends LogFormatter {
 	
-	public DateFormatter(Logger logger) {
-		super(logger);
+	public DateFormatter() {
+		super();
 	}
 
-	public DateFormatter(Logger logger, LogFormatter formatter) {
-		super(logger, formatter);
+	public DateFormatter(LogFormatter formatter) {
+		super(formatter);
 	}
 
 	public String appendToMessage(String message) {
