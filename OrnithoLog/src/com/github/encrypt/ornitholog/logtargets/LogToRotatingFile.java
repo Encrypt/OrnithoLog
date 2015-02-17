@@ -42,15 +42,10 @@ public class LogToRotatingFile extends LogTarget {
 		
 		// Finds the file with the greatest number
 		do {
-			switch(maxFileInt) {
-				case 0:
-					logFile = new File(targetFile);
-					break;
-	
-				default:
-					logFile = new File(targetFile + "." + maxFileInt);
-					break;
-				}
+			if(maxFileInt == 0)
+				logFile = new File(targetFile);
+			else 
+				logFile = new File(targetFile + "." + maxFileInt);
 			
 			if(!logFile.exists())
 				fileExists = false;
@@ -66,15 +61,10 @@ public class LogToRotatingFile extends LogTarget {
 		// Moves each file for targetFile to be the new fresh log file
 		for(int i = maxFileInt - 1 ; i >= 0 ; i--) {
 			
-			switch(i) {
-				case 0:
-					logFile = new File(targetFile);
-					break;
-	
-				default:
-					logFile = new File(targetFile + "." + i);
-					break;
-			}
+			if(i == 0)
+				logFile = new File(targetFile);
+			else
+				logFile = new File(targetFile + "." + i);
 			
 			logFile.renameTo(new File(targetFile + "." + (i+1)));
 		}
