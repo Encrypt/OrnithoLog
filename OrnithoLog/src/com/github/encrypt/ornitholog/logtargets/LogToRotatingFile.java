@@ -15,22 +15,22 @@ public class LogToRotatingFile extends LogTarget {
 		this.targetFile = targetFile;
 		this.maxFileSize = maxFileSize; 
 	}
-
-	// Gets the size of the file (in bytes!)
-	private double getFileSize() {
-		File logFile = new File(targetFile);
+	
+	// Creates a given file
+	private void createFile(File fileToCreate) {
 		
-		if(logFile.exists()) {
-			return logFile.length();
+		if(fileToCreate.exists()) {
+			System.err.println("The file: " + fileToCreate.getPath() + " already exists!");
 		}
 		else {
 			try {
-				logFile.createNewFile();
+				fileToCreate.createNewFile();
 			} catch (IOException e) {
-				System.err.println("Couldn't create file: " + targetFile);
+				System.err.println("Couldn't create file: " + fileToCreate.getPath());
+				System.err.println("Attempt returned the error: " + e.getMessage());
 			}
-			return -1;
 		}
+		
 	}
 	
 	// Rotates the log file
@@ -54,20 +54,17 @@ public class LogToRotatingFile extends LogTarget {
 			
 			if(!logFile.exists())
 				fileExists = false;
-			maxFileInt++;
+			else
+				maxFileInt++;
 			
 		} while(fileExists);
 		
-		// Creates the new log file (.maxFileInt + 1)
-		logFile = new File(targetFile + "." + maxFileInt + 1);
-		try {
-			logFile.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Couldn't create file: " + targetFile);
-		}
+		// Creates the new log file (.maxFileInt)
+		logFile = new File(targetFile + "." + maxFileInt);
+		createFile(logFile);
 		
 		// Moves each file for targetFile to be the new fresh log file
-		for(int i = maxFileInt ; i >= 0 ; i--) {
+		for(int i = maxFileInt - 1 ; i >= 0 ; i--) {
 			
 			switch(i) {
 				case 0:
@@ -87,16 +84,21 @@ public class LogToRotatingFile extends LogTarget {
 	@Override
 	public void save(String logData) {
 		
+		// Creates the file if it doesn't exist
+		File logFile = new File(targetFile);
+		createFile(logFile);
+		
 		// Gets the file size and rotates if necessary
-		if(getFileSize() >= maxFileSize)
+		if(logFile.length() >= maxFileSize)
 			rotateFile();
 		
+		// Writes the log line in the file
 		try {
 			FileWriter writer = new FileWriter(targetFile, true);
 			writer.write(logData);
 			writer.close();
 		} catch(IOException e) {
-			System.err.println("Error:" + e.getMessage());
+			System.err.println("Error: " + e.getMessage());
 		}
 		
 	}
