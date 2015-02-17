@@ -58,10 +58,28 @@ public class LogToRotatingFile extends LogTarget {
 			
 		} while(fileExists);
 		
+		// Creates the new log file (.maxFileInt + 1)
+		logFile = new File(targetFile + "." + maxFileInt + 1);
+		try {
+			logFile.createNewFile();
+		} catch (IOException e) {
+			System.err.println("Couldn't create file: " + targetFile);
+		}
+		
 		// Moves each file for targetFile to be the new fresh log file
-		for(int i = maxFileInt ; i > 0 ; i--) {
-			logFile = new File(targetFile + "." + i);
-			logFile.renameTo(new File(targetFile + "." + (i-1)));
+		for(int i = maxFileInt ; i >= 0 ; i--) {
+			
+			switch(i) {
+				case 0:
+					logFile = new File(targetFile);
+					break;
+	
+				default:
+					logFile = new File(targetFile + "." + i);
+					break;
+			}
+			
+			logFile.renameTo(new File(targetFile + "." + (i+1)));
 		}
 	}
 	
