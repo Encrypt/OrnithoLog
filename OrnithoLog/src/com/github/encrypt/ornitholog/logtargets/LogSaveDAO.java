@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class LogSaveDAO {
 
-	private LogSaveDAO instance = null;
+	private static LogSaveDAO instance = null;
 	private ArrayList<LogTarget> target;
 	
 	private LogSaveDAO(ArrayList<LogTarget> target) {
 		this.target = target;
 	}
 	
-	public LogSaveDAO getInstance(ArrayList<LogTarget> targets) {
+	public static LogSaveDAO getInstance(ArrayList<LogTarget> targets) {
 
 		if(instance == null) {
 			instance = new LogSaveDAO(targets);

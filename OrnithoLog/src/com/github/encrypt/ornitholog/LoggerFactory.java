@@ -9,7 +9,6 @@ public class LoggerFactory extends Logger {
 	
 	public Logger getLogger(String string){
 		
-		
 		return null;	
 	}
 	
