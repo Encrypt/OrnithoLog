@@ -56,4 +56,8 @@ public class Logger {
 	public void setLevel(LogLevel level){
 		this.level = level;
 	}
+	
+	public LogLevel getLevel() {
+		return this.level;
+	}
 }
