@@ -2,6 +2,7 @@ package com.github.encrypt.ornitholog;
 
 import com.github.encrypt.ornitholog.logtargets.*;
 import com.github.encrypt.ornitholog.formatters.*;
+
 import java.util.ArrayList;
 
 public class Logger {
@@ -11,10 +12,12 @@ public class Logger {
 	private LogLevel level;
 	private LogFormatter formatter;
 	private LogSaveDAO saveDAO;
+	protected String className;
 	
-	public Logger(){
+	public Logger(String className){
 		this.targets = new ArrayList<LogTarget>();
 		this.saveDAO = LogSaveDAO.getInstance(targets);
+		this.className = className;
 	}
 	
 	private void saveToTargets(String string){
