@@ -49,9 +49,10 @@ public class Logger {
 		targets.add(target);
 	}
 	
-	public LogLevel getLevel() {
-		return this.level;
+	public void setFormatter(LogFormatter formatter) {
+		this.formatter = formatter;
 	}
+	
 	public void setLevel(LogLevel level){
 		this.level = level;
 	}
