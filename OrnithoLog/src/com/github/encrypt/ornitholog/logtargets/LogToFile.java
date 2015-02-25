@@ -6,13 +6,22 @@ import java.io.IOException;
 public class LogToFile extends LogTarget {
 
 	// Target file: path to the file
-	private String targetFile;
+	String targetFile;
 	
-	// Constructor
+	// Constructors
 	public LogToFile(String targetFile) {
 		this.targetFile = targetFile;
 	}
 
+	public LogToFile() {
+		/* Does nothing */
+	}
+	
+	// Sets the target file
+	public void setTargetFile(String targetFile) {
+		this.targetFile = targetFile;
+	}
+	
 	// Saves a line of log in the file
 	@Override
 	public void save(String logData) {

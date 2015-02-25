@@ -10,10 +10,14 @@ public class LogToRotatingFile extends LogTarget {
 	private String targetFile;
 	private double maxFileSize;
 	
-	// Constructor
+	// Constructors
 	public LogToRotatingFile(String targetFile, int maxFileSize) {
 		this.targetFile = targetFile;
 		this.maxFileSize = maxFileSize; 
+	}
+	
+	public LogToRotatingFile() {
+		/* Does nothing */
 	}
 	
 	// Creates a given file
@@ -68,6 +72,16 @@ public class LogToRotatingFile extends LogTarget {
 			
 			logFile.renameTo(new File(targetFile + "." + (i+1)));
 		}
+	}
+	
+	// Sets the target file
+	public void setTargetFile(String targetFile) {
+		this.targetFile = targetFile;
+	}
+	
+	// Sets the max file size
+	public void setMaxFileSize(double maxFileSize) {
+		this.maxFileSize = maxFileSize;
 	}
 	
 	// Saves a line of log in the file

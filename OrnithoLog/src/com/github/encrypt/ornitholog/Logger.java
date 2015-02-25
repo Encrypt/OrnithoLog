@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Logger {
 
-	private ArrayList<LogTarget> targets;
+	ArrayList<LogTarget> targets;
 	private String confFile;
 	private LogLevel level;
 	private LogFormatter formatter;
