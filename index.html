@@ -77,23 +77,49 @@
                         
                         <h1 id="api">API</h1>
 
+                            <h2>Récupération d'un objet Logger</h2>
+                            <p>Les objets Logger sont associé à la classe qui va les utiliser, il y a donc un objet Logger par classe qui produit des logs. Cela permet de pouvoir mieux configurer la façon dont les logs sont formattés et enregistrés.</p>
+
+                            <p>Pour récupérer l'objet Logger associés à une classe, il faut faire appel à la méthode statique <code>getLogger</code> de la classe <code>LoggerFactory</code>, en lui passant en paramètre le nom de la classe appelante. Exemple:</p>
+
+                            <div class="highlight">
+                                <pre>
+                                    <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger(this.getClass().getName());</code>
+                                </pre>
+                            </div>
+
+                            <p>Si le logger associé à la classe appelante existe déjà, le <code>LoggerFactory.getLogger()</code>va le retourner, et s'il n'existe pas, il sera crée.</p>
+
                             <h2 id="log-level">Niveau des logs</h2>
-                            <p>Notre framework distingue 3 niveaux de log et présente une hiérarchie :</p>
+                            <p>Notre framework distingue 4 niveaux de log et présente une hiérarchie :</p>
                             <ul>
                                 <li><strong>ERROR :</strong> Au niveau le plus haut, cette configuration enregistre les logs d'erreur.</li>
                                 <li><strong>WARN :</strong> En dessous, cette configuration enregistre les logs d'avertissement et d'erreur.</li>
-                                <li><strong>DEBUG :</strong> Encore en-dessous, cette configuration enregistre les logs de débogage, d'avertissement et d'erreur.</li>
-                                <li><strong>INFO :</strong> Enfin, cette dernière configuration, enregistre les logs d'information, de débogage, d'avertissement et d'erreur.</li>
+                                <li><strong>INFO :</strong> Encore en-dessous, cette configuration enregistre les logs d'information, d'avertissement et d'erreur.</li>
+                                <li><strong>DEBUG :</strong> Enfin, cette dernière configuration enregistre les logs de débogage, d'information, d'avertissement et d'erreur. <strong>Valeur par défaut</strong>.</li>
                             </ul>
-                            <p>Pour logguer un message, il faut faire appel à la méthode .info(&lt;Message&gt;), .debug(&lt;Message&gt;), .warn(&lt;Message&gt;), .error(&lt;Message&gt;) de l'instance Logger.</p>
-                            <p>Le message peut bien contenir des variables à afficher et le fonctionnement est similaire à l'appel de System.out.println().</p>
-                            <p>Enfin, il faut noter que par défaut une instance Logger est initialisée avec la valeur DEBUG.</p>
+
+                            <p>Pour logguer un message, il faut faire appel à la méthode <code>.debug("message")</code>, <code>.info("message")</code>, <code>.warn("message")</code> ou <code>.error("message")</code> de l'instance Logger.</p>
+                            <p>Le message peut bien contenir des variables à afficher et le fonctionnement est similaire à l'appel de <code>System.out.println()</code>.</p>
+
+                            <p>Exemple:</p>
+                            <div class="highlight">
+                                <pre>
+                                    <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+logger.info("ceci est un message informatif");  // sera enregistré car le niveau de log par défaut est DEBUG
+logger.setLevel(LogLevel.WARN);             // on change le niveau de filtrage des logs à WARN
+logger.debug("ceci est message de debug");  // ne sera pas enregistré car on n'affiche que les messages de niveau WARN ou supérieur
+logger.error("ceci est un message s'erreur");  // sera enregistré car ERROR est encore plus important que WARN</code>
+                                </pre>
+                            </div>
                             <br />
                             
                             <h2 id="log-format">Format des logs</h2>
                             
                                 <h3>Loggueurs fournis avec le Framework</h3>
-                                <p>Notre framework est livré avec 3 formatteurs de logs, disponibles dans le package com.github.encrypt.ornitholog.formatters :</p>
+                                <p>Notre framework est livré avec 3 formatteurs de logs, disponibles dans le package <code>com.github.encrypt.ornitholog.formatters</code> :</p>
                                 <ul>
                                     <li><strong>DateFormatter :</strong> Ce formatteur renvoie la date courante du système afin d'avoir des logs datés.</li>
                                     <li><strong>LevelFormatter :</strong> Ce formatteur renvoie le niveau actuel du loggueur passé en paramètre.</li>
@@ -102,7 +128,7 @@
                                 
                                 <h3>Créer un nouveau formatteur</h3>
                                 <p>Vous êtes libres de créer un nouveau formatteur ! Pour cela, il suffit de créer une classe héritant de LogFormatter et de lui donner le comportement désiré.</p>
-                                <p>Vérifiant l'Open-Closed Principle, il est aisé d'ajouter des fonctionnalités au framework.</p>
+                                <p>Vérifiant l'<a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open-Closed Principle</a>, il est aisé d'ajouter des fonctionnalités au framework.</p>
                                 
                                 <h3>Faire appel aux formatteurs</h3>
                                 <p>Le formattage des logs a été pensé suivant le <b>design pattern "Decorator"</b>.</p>
@@ -138,7 +164,7 @@ Logger logger = LoggerFactory.getLogger("MaClasse");
                                 <h3>Fichier plat</h3>
                                 <p>Une autre cible fournie est l'écriture des logs dans un fichier plat.</p>
                                 <p>Pour l'utiliser, il faut faire appel à LogToFile en passant en paramètre le chemin vers le fichier d'enregistrement.</p>
-                                <p>Cette cible possède également la méthode setTargetFile(String targetFile) permettant de créer l'objet LogToFile sans lui passer de chemin dans un premier temps.</p>
+                                <p>Cette cible possède également la méthode <code>setTargetFile(String targetFile)</code> permettant de créer l'objet LogToFile sans lui passer de chemin dans un premier temps.</p>
                                 <p><u>Exemple :</u></p>
                                 <div class="highlight">
                                     <pre>
@@ -159,7 +185,7 @@ logger.addTarget(new LogToFile("/path/to/my/file"));</code>
                                 <p></p>
                                 <p>Enfin, la dernière cible fournie permet l'écriture des logs dans un fichier rotatif.</p>
                                 <p>Son mode de fonctionnement est similaire à celui du fichier plat, hormis le fait que son constructeur prend en second paramètre la taille cible maximale, en <u>octets</u>.</p>
-                                <p>En plus de la méthode setTargetFile(String targetFile), la méthode setMaxFileSize(double maxFileSize) vous permet de spécifier la taille maximale du fichier cible ultérieurement.</p>
+                                <p>En plus de la méthode <code>setTargetFile(String targetFile)</code>, la méthode <code>setMaxFileSize(double maxFileSize)</code> vous permet de spécifier la taille maximale du fichier cible ultérieurement.</p>
                                 <p><u>Exemple :</u></p>
                                 <div class="highlight">
                                     <pre>
@@ -183,22 +209,31 @@ logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));</code>
                             <h2 id="fram-methods">Méthodes fournies</h2>
                             <p>Plusieurs méthodes sont fournies pour configurer les instances de Logger :</p>
                             <ul>
-                                <li><strong>addTarget(LogTarget target) :</strong> Permet d'ajouter une cible de logging.</li>
-                                <li><strong>setFormatter(LogFormatter formatter) :</strong> Permet de spécifier le formattage des logs en suivant le design pattern "Decorator".</li>
-                                <li><strong>setLevel(LogLevel level) :</strong> Permet de définir le niveau de logs du Logger.</li>
-                                <li><strong>getLevel() :</strong> Permet de récupérer le niveau d'alerte du Logger.</li>
+                                <li><code>addTarget(LogTarget target)</code>: Permet d'ajouter une cible de logging.</li>
+                                <li><code>setFormatter(LogFormatter formatter)</code>: Permet de spécifier le formattage des logs en suivant le design pattern "Decorator".</li>
+                                <li><code>setLevel(LogLevel level)</code>: Permet de définir le niveau de logs du Logger.</li>
+                                <li><code>getLevel()</code>: Permet de récupérer le niveau d'alerte du Logger.</li>
                             </ul>
                             <br />
                             
                             <h2 id="properties">Fichier .properties</h2>
                             <p>Afin de créer automatiquement les instances de Logger et ne plus avoir à paramétrer une instance manuellement, il est possible de renseigner ses paramètres dans un fichier .properties, à mettre à la racine du projet utilisant le framework.</p>
-                            <p>Pour ce faire, les paramètres doivent être sous la forme suivante : package.class:objet.parametre = valeur</p>
+                            <p>Pour ce faire, les paramètres doivent être sous la forme suivante : <code>package.class:attribute = valeur</code>.</p>
+
+                            <ul>
+                                <li><code>package.class</code>: le nom de la classe à laquelle est affecté le Logger</li>
+                                <li><code>attribute</code>: l'attribut auquel on veut affecter une valeur</li>
+                                <li><code>valeur</code>: la valeur que l'on va affecter à l'attribut</li>
+                            </ul>
+
+                            <p>Remarque: il est possible d'affecter des valeurs aà des attributs d'attributs, par exemple: <code>package.class:attribute1.attribute2 = valeur</code>.</p>
+
                             <p><u>Exemple de configuration :</u></p>
                             <div class="highlight">
                                 <pre>
 <code class="language-java" data-lang="java">
 com.myProject.MyClass:level = DEBUG
-com.myProject.MyClass:formater = DateFormatter
+com.myProject.MyClass:formatter = DateFormatter
 com.myProject.MyClass:target1 = LogToConsole
 com.myProject.MyClass:target2 = LogToFile
 com.myProject.MyClass:target2.path = "path/to/my/file"
@@ -238,6 +273,14 @@ com.myProject.MyClass:target3.maxSize = 102400.0</code>
 
     </div>
     <!-- /#wrapper -->
+
+    <a href="https://github.com/encrypt/OrnithoLog">
+        <img
+        style="position: absolute; top: 0; right: 0; border: 0;"
+        src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+        alt="Fork me on GitHub">
+    </a>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
