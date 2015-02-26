@@ -10,12 +10,10 @@ public class Logger {
 	protected ArrayList<LogTarget> targets;
 	protected LogLevel level = LogLevel.DEBUG;  // DEBUG is default log level
 	private LogFormatter formatter;
-	private LogSaveDAO saveDAO;
 	protected String className;
 	
 	public Logger(String className){
 		this.targets = new ArrayList<LogTarget>();
-		this.saveDAO = LogSaveDAO.getInstance(targets);
 		this.className = className;
 	}
 	
@@ -41,9 +39,11 @@ public class Logger {
 	
 	private void save(String message) {
 		if (this.formatter != null)
-			this.saveDAO.save(this.formatter.format(message));
+			for(int i = 0 ; i < this.targets.size() ; i++)
+				this.targets.get(i).save(this.formatter.format(message));
 		else
-			this.saveDAO.save(message);
+			for(int i = 0 ; i < this.targets.size() ; i++)
+				this.targets.get(i).save(message);
 	}
 	
 	public void addTarget(LogTarget target){

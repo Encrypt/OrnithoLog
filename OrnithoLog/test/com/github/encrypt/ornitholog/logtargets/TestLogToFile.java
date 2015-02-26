@@ -19,25 +19,33 @@ import com.github.encrypt.ornitholog.LoggerFactory;
 import com.github.encrypt.ornitholog.formatters.DateFormatter;
 
 public class TestLogToFile {
+	
+	private static boolean setupDone = false;  // because we need to setup the tests only once
+	private static int testsDone = 0;   // the number of tests done
 
 	private Logger logger;
-	private String myPath = "/Users/patouz/Documents/TestLogToFile.txt";
+	private String myPath = "TestLogToFile.txt";
 	
 	
 	@Before
 	public void before() {
-		this.logger = LoggerFactory.getLogger("com.example.Examples");
-		logger.addTarget(new LogToFile(myPath));
-		logger.setFormatter(new DateFormatter());
-		logger.setLevel(LogLevel.DEBUG);
-		logger.debug("Ceci est un test!");
-		logger.debug("Ceci est le 2e test!");
+		if (!this.setupDone) {
+			this.logger = LoggerFactory.getLogger("com.example.Examples");
+			logger.addTarget(new LogToFile(myPath));
+			logger.setFormatter(new DateFormatter());
+			logger.setLevel(LogLevel.DEBUG);
+			logger.debug("Ceci est un test!");
+			logger.debug("Ceci est le 2e test!");
+			this.setupDone = true;
+		}
 	}
 	
 	@Test
 	public void fileExists() {
 		File file = new File(myPath);
 		assertTrue(file.exists());
+		
+		testsDone++;
 	}
 	
 	@Test
@@ -46,18 +54,22 @@ public class TestLogToFile {
 			List<String> lines = Files.readAllLines(Paths.get(myPath), Charset.defaultCharset());
 			assertEquals(2,lines.size());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Test Failed : File doesn't exists.");
 		}
+		
+		testsDone++;
 	}
 	
 	
 	@After
 	public void clean(){
-		File file = new File(myPath);
-		if(file.exists()){
-			file.delete();
+		// we should delete the file only when all the tests are done
+		if (testsDone == 2) {
+			File file = new File(myPath);
+			if(file.exists()){
+				file.delete();
+			}
 		}
 	}
 	
