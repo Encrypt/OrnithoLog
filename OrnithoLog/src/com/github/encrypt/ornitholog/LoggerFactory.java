@@ -28,31 +28,34 @@ public class LoggerFactory {
 	public static void initLoggers() {
 		
 		String readLine;
-		String[] tokens = new String[2];
-		String[] attributes = new String[2];
 		
 		// Reads the properties file
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("properties"));
 	
 			while ((readLine = br.readLine()) != null) {
-				tokens = readLine.split(":");
-				
-				// Gets the associated logger
-				Logger logger = getLogger(tokens[0]);
-				
-				// Gets the attributes to set
-				attributes = readLine.split("=");
-				
-				// Switch on the value of the 1st token before "="
-				if(attributes[0].equals("level"))
-					readLoglevel(logger, attributes[1]);
-				
-				else if(attributes[0].startsWith("target"))
-					readTarget(logger, attributes);
-				
-				else
-					System.err.println("Error: " + attributes[0] + " isn't a supported parameter.");
+				try {
+					// Splits the line into separate strings
+					String logger_classname  = readLine.split(":")[0];
+					String nested_attributes = readLine.split(":")[1].split("=")[0];
+					String value             = readLine.split("=")[1];
+					
+					// Gets the associated logger
+					Logger logger = getLogger(logger_classname);
+					
+					// Switch on the value of the 1st token before "="
+					if(nested_attributes.equals("level"))
+						readLoglevel(logger, value);
+					
+					else if(nested_attributes.startsWith("target"))
+						readTarget(logger, nested_attributes, value);
+					
+					else
+						System.err.println("Error: " + nested_attributes + " isn't a supported parameter.");
+				}
+				catch (Exception ex) {
+					System.err.println("Error: Invalid line in .properties file");
+				}
 			}
 			
 			br.close();
@@ -80,15 +83,15 @@ public class LoggerFactory {
 	}
 	
 	// Reads the target
-	private static void readTarget(Logger logger, String attributes[]) {
+	private static void readTarget(Logger logger, String nested_attributes, String value) {
 		
-		String dotSplit[] = attributes[0].split(".");
+		String dotSplit[] = nested_attributes.split(".");
 		
 		// If there are two arguments with "path" -> sets the target path
 		if(dotSplit.length == 2) {
 			if(dotSplit[1].equals("path")) {
 				int targetValue = Integer.parseInt(dotSplit[0].substring(6));
-				readTargetPath(logger, targetValue, attributes[1]);
+				readTargetPath(logger, targetValue, value);
 			}
 		}
 		
@@ -97,19 +100,19 @@ public class LoggerFactory {
 			
 			try {
 				int targetsSize = logger.targets.size();
-				int targetValue = Integer.parseInt(attributes[0].substring(6));
+				int targetValue = Integer.parseInt(nested_attributes.substring(6));
 		
 				// If the targets doesn't exist in the logger (n-1 loggers), creates it & adds it to the logger
 				if(targetsSize == targetValue - 1) {
 					
 					try {
-						logger.addTarget((LogTarget)Class.forName(attributes[1]).newInstance());					
+						logger.addTarget((LogTarget)Class.forName(value).newInstance());					
 					}
 					catch(ClassNotFoundException e) {
-						System.err.println("Error: The LogTarget " + attributes[1] + " doesn't exist.");
+						System.err.println("Error: The LogTarget " + value + " doesn't exist.");
 					}
 					catch (InstantiationException | IllegalAccessException e) {
-						System.err.println("Error: The LogTarget " + attributes[1] + " couldn't be instanciated.");
+						System.err.println("Error: The LogTarget " + value + " couldn't be instanciated.");
 					}
 				}
 				
@@ -119,13 +122,13 @@ public class LoggerFactory {
 				
 			}
 			catch(NumberFormatException e) {
-				System.err.println("Error: Expected target<value> but got: target" + attributes[0].substring(6));
+				System.err.println("Error: Expected target<value> but got: target" + nested_attributes.substring(6));
 			}
 		}
 		
 		// Else, we don't know what the user has done
 		else
-			System.err.println("Error: Couldn't read parameter" + attributes);
+			System.err.println("Error: Bad parameter");
 	}
 	
 	// Reads the target path
