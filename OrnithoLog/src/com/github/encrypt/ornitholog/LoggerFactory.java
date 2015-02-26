@@ -1,25 +1,26 @@
 package com.github.encrypt.ornitholog;
 
 import com.github.encrypt.ornitholog.logtargets.*;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoggerFactory {
 
-	private static ArrayList<Logger> loggers;
+	private static HashMap<String, Logger> loggers;
 	
 	// Gets a logger, if we give it a name
-	public static Logger getLogger(String maClasse) {
-		for(Logger logger : loggers){
-			
-			if(logger.className.equals(maClasse)){
-				return logger;
-			}
-		}
-		Logger logger = new Logger(maClasse);
+	public static Logger getLogger(String className) {
+		// first, we check if the logger already exists
+		if (loggers.containsKey(className))
+			return loggers.get(className);
+
+		// if it does not exist, we create one, we add it to the HashMap, and we return it
+		Logger logger = new Logger(className);
+		loggers.put(className, logger);
 		return logger;	
 	}
 	
