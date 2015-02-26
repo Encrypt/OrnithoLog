@@ -78,15 +78,15 @@
                         <h1 id="api">API</h1>
 
                             <h2 id="log-level">Niveau des logs</h2>
-                            <p>Notre framework distingue 3 niveaux de log, et présente une hiérarchie :</p>
+                            <p>Notre framework distingue 3 niveaux de log et présente une hiérarchie :</p>
                             <ul>
-                                <li><strong>ERROR:</strong> Au niveau le plus haut, cette configuration enregistre les logs d'erreur.</li>
-                                <li><strong>WARN:</strong> En dessous, cette configuration enregistre les logs d'avertissement et d'erreur.</li>
+                                <li><strong>ERROR :</strong> Au niveau le plus haut, cette configuration enregistre les logs d'erreur.</li>
+                                <li><strong>WARN :</strong> En dessous, cette configuration enregistre les logs d'avertissement et d'erreur.</li>
                                 <li><strong>DEBUG :</strong> Encore en-dessous, cette configuration enregistre les logs de débogage, d'avertissement et d'erreur.</li>
                                 <li><strong>INFO :</strong> Enfin, cette dernière configuration, enregistre les logs d'information, de débogage, d'avertissement et d'erreur.</li>
                             </ul>
                             <p>Pour logguer un message, il faut faire appel à la méthode .info(&lt;Message&gt;), .debug(&lt;Message&gt;), .warn(&lt;Message&gt;), .error(&lt;Message&gt;) de l'instance Logger.</p>
-                            <p>Le message peut bien contenir des variables à afficher, et le fonctionnement est similaire à l'appel de System.out.println().</p>
+                            <p>Le message peut bien contenir des variables à afficher et le fonctionnement est similaire à l'appel de System.out.println().</p>
                             <br />
                             
                             <h2 id="log-format">Format des logs</h2>
@@ -94,9 +94,9 @@
                                 <h3>Loggueurs fournis avec le Framework</h3>
                                 <p>Notre framework est livré avec 3 formatteurs de logs, disponibles dans le package com.github.encrypt.ornitholog.formatters :</p>
                                 <ul>
-                                    <li><strong>DateFormatter:</strong> Ce formatteur renvoie la date courante du système afin d'avoir des logs datés.</li>
-                                    <li><strong>LevelFormatter:</strong> Ce formatteur renvoie le niveau actuel du loggueur passé en paramètre.</li>
-                                    <li><strong>ClassFormatter:</strong> Ce formatteur renvoie la classe du loggueur passé en paramètre.</li>
+                                    <li><strong>DateFormatter :</strong> Ce formatteur renvoie la date courante du système afin d'avoir des logs datés.</li>
+                                    <li><strong>LevelFormatter :</strong> Ce formatteur renvoie le niveau actuel du loggueur passé en paramètre.</li>
+                                    <li><strong>ClassFormatter :</strong> Ce formatteur renvoie la classe du loggueur passé en paramètre.</li>
                                 </ul>
                                 
                                 <h3>Créer un nouveau formatteur</h3>
@@ -111,8 +111,7 @@
                                     <pre>
                                         <code class="language-java" data-lang="java">
 Logger logger = LoggerFactory.getLogger("MaClasse");
-<b>logger.setFormatter(new DateFormatter(new LevelFormatter(new ClassFormatter())));</b>
-                                        </code>
+<b>logger.setFormatter(new DateFormatter(new LevelFormatter(new ClassFormatter())));</b></code>
                                     </pre>
                                 </div>
                                 <br />
@@ -131,8 +130,7 @@ Logger logger = LoggerFactory.getLogger("MaClasse");
                                     <pre>
                                         <code class="language-java" data-lang="java">
 Logger logger = LoggerFactory.getLogger("MaClasse");
-<b>logger.addTarget(new LogToConsole());</b>
-                                        </code>
+<b>logger.addTarget(new LogToConsole());</b></code>
                                     </pre>
                                 </div>
                                 
@@ -152,15 +150,14 @@ logger.addTarget(myTarget);
 
 <i>-- OU --</i>
 
-logger.addTarget(new LogToFile("/path/to/my/file"));
-                                        </code>
+logger.addTarget(new LogToFile("/path/to/my/file"));</code>
                                     </pre>
                                 </div>
                                 
                                 <h3>Fichier rotatif</h3>
                                 <p></p>
                                 <p>Enfin, la dernière cible fournie permet l'écriture des logs dans un fichier rotatif.</p>
-                                <p>Son mode de fonctionnement est similaiure à celui du fichier plat, hormis le fait que son constructeur prend en second paramètre la taille cible maximale, en <u>octets</u>.</p>
+                                <p>Son mode de fonctionnement est similaire à celui du fichier plat, hormis le fait que son constructeur prend en second paramètre la taille cible maximale, en <u>octets</u>.</p>
                                 <p>En plus de la méthode setTargetFile(String targetFile), la méthode setMaxFileSize(double maxFileSize) vous permet de spécifier la taille maximale du fichier cible ultérieurement.</p>
                                 <p><u>Exemple :</u></p>
                                 <div class="highlight">
@@ -168,15 +165,14 @@ logger.addTarget(new LogToFile("/path/to/my/file"));
                                         <code class="language-java" data-lang="java">
 Logger logger = LoggerFactory.getLogger("MaClasse");
 
-LogToFile myTarget = new LogToRotatingFile("/path/to/my/file", 1024000.0);
+LogToRotatingFile myTarget = new LogToRotatingFile("/path/to/my/file", 1024000.0);
 myTarget.setTargetFile("/path/to/my/file");
 myTarget.setMaxFileSize(1024000.0);
 logger.addTarget(myTarget);
 
 <i>-- OU --</i>
 
-logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));
-                                        </code>
+logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));</code>
                                     </pre>
                                 </div>
                         <br />
@@ -189,7 +185,7 @@ logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));
                                 <li><strong>addTarget(LogTarget target) :</strong> Permet d'ajouter une cible de logging.</li>
                                 <li><strong>setFormatter(LogFormatter formatter) :</strong> Permet de spécifier le formattage des logs en suivant le design pattern "Decorator".</li>
                                 <li><strong>setLevel(LogLevel level) :</strong> Permet de définir le niveau de logs du Logger.</li>
-                                <li><strong>getLevel() :</strong>Permet de récupérer le niveau d'alerte du Logger.</li>
+                                <li><strong>getLevel() :</strong> Permet de récupérer le niveau d'alerte du Logger.</li>
                             </ul>
                             <br />
                             
@@ -199,13 +195,15 @@ logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));
                             <p><u>Exemple de configuration :</u></p>
                             <div class="highlight">
                                 <pre>
-                                    <code class="language-java" data-lang="java">
+<code class="language-java" data-lang="java">
 com.myProject.MyClass:level = DEBUG
 com.myProject.MyClass:formater = DateFormatter
 com.myProject.MyClass:target1 = LogToConsole
 com.myProject.MyClass:target2 = LogToFile
 com.myProject.MyClass:target2.path = "path/to/my/file"
-                                    </code>
+com.myProject.MyClass:target3 = LogToRotatingFile
+com.myProject.MyClass:target3.path = "path/to/my/other/file"
+com.myProject.MyClass:target3.maxSize = 102400.0</code>
                                 </pre>
                             </div>
                         <br />
