@@ -20,7 +20,7 @@ public class TestLoggerFactory {
 		LoggerFactory.setPropertiesFilePath("test/com/github/encrypt/ornitholog/ornitholog.properties");
 		LoggerFactory.initLoggers();
 		Logger logger = LoggerFactory.getLogger("com.myProject");
-		assertTrue(logger.level== LogLevel.INFO);
+		assertTrue(logger.level== LogLevel.DEBUG);
 	}
 
 }

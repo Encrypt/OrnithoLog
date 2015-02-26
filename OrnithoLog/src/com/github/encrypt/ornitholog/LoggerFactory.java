@@ -39,9 +39,9 @@ public class LoggerFactory {
 			while ((readLine = br.readLine()) != null) {
 				try {
 					// Splits the line into separate strings
-					String logger_classname  = readLine.split(":")[0];
-					String nested_attributes = readLine.split(":")[1].split("=")[0];
-					String value             = readLine.split("=")[1];
+					String logger_classname  = readLine.split(":")[0].trim();
+					String nested_attributes = readLine.split(":")[1].split("=")[0].trim();
+					String value             = readLine.split("=")[1].trim();
 					
 					// Gets the associated logger
 					Logger logger = getLogger(logger_classname);
@@ -91,7 +91,7 @@ public class LoggerFactory {
 	// Reads the formater
 	private static void readFormatter(Logger logger, String value) {
 		try {
-			logger.setFormatter((LogFormatter)Class.forName(value).newInstance());
+			logger.setFormatter((LogFormatter)Class.forName("com.github.encrypt.ornitholog.formatters." + value).newInstance());
 		}
 		catch(ClassNotFoundException e) {
 			System.err.println("Error: The LogFormatter " + value + " doesn't exist.");
@@ -104,7 +104,7 @@ public class LoggerFactory {
 	// Reads the target
 	private static void readTarget(Logger logger, String nested_attributes, String value) {
 		
-		String dotSplit[] = nested_attributes.split(".");
+		String dotSplit[] = nested_attributes.split("\\.");
 		
 		// If there are two arguments with "path" -> sets the target path
 		if(dotSplit.length == 2) {
@@ -112,13 +112,13 @@ public class LoggerFactory {
 			int targetValue = Integer.parseInt(dotSplit[0].substring(6));
 			
 			if(dotSplit[1].equals("path"))
-				readTargetPath(logger, targetValue, value);
+				readTargetPath(logger, targetValue - 1, value);
 			if(dotSplit[1].equals("maxSize"))
 				readTargetMaxFileSize(logger, targetValue, value);
 		}
 		
 		// Else, there is no dot -> new target given in the file
-		else if(dotSplit.length == 0) {
+		else if(dotSplit.length == 1) {
 			
 			try {
 				int targetsSize = logger.targets.size();
@@ -128,7 +128,7 @@ public class LoggerFactory {
 				if(targetsSize == targetValue - 1) {
 					
 					try {
-						logger.addTarget((LogTarget)Class.forName(value).newInstance());					
+						logger.addTarget((LogTarget)Class.forName("com.github.encrypt.ornitholog.logtargets." + value).newInstance());					
 					}
 					catch(ClassNotFoundException e) {
 						System.err.println("Error: The LogTarget " + value + " doesn't exist.");
@@ -140,7 +140,7 @@ public class LoggerFactory {
 				
 				// Else, the number of loggers is incorrect, warns the user
 				else
-					System.err.println("Error: LogTarget #" + targetValue + " ; expected #" + (targetsSize + 1));
+					System.err.println("Error: Got LogTarget #" + targetValue + " while expecting #" + (targetsSize + 1));
 				
 			}
 			catch(NumberFormatException e) {
@@ -155,6 +155,7 @@ public class LoggerFactory {
 	
 	// Reads the target path
 	private static void readTargetPath(Logger logger, int targetIndex, String path) {
+		System.out.println("# of targets: " + logger.targets.size());
 		LogTarget logTarget = logger.targets.get(targetIndex);
 		
 		if(logTarget instanceof LogToFile)
