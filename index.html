@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>OrnithoLog -- Un framework de Logging</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -33,41 +33,27 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        OrnithoLOG
-                    </a>
-                </li>
-                <li>
-                    <a href="#intro">Introduction</a>
-                </li>
-                <li>
-                    <a href="#api">API</a>
+                <li class="sidebar-brand"><a href="#">OrnithoLog</a></li>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#api">API</a>
                     <ul>
-                        <li>
-                            <a href="#log-level">Niveau de log</a>
-                        </li>
-                        <li>
-                            <a href="#log-format">Formatter de log</a>
-                        </li>
-                        <li>
-                            <a href="#log-target">Cibles des log</a>
-                        </li>
+                        <li><a href="#log-level">Niveaux de logging</a></li>
+                        <li><a href="#log-format">Format des logs</a></li>
+                        <li><a href="#log-target">Cibles des logs</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#config">Configuration du framework</a>
-                        <ul>
-                            <li>
-                                <a href="#properties">Fichier .properties</a>
-                            </li>
-                        </ul>
+                <li><a href="#config">Configuration du framework</a>
+                    <ul>
+                        <li><a href="#fram-methods">Méthodes fournies</a></li>
+                        <li><a href="#properties">Fichier .properties</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="#uml">UML</a>
-                </li>
-                <li>
-                    <a href="#license">Licence</a>
+                <li><a href="#uml">Diagramme UML</a></li>
+                <li><a href="#credits">Credits</a>
+                    <ul>
+                        <li><a href="#licence">Licence</a></li>
+                        <li><a href="#authors">Auteurs</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -80,7 +66,7 @@
                     <div class="col-lg-12">
 
                         <div style="text-align: center;">
-                            <img src="https://drive.google.com/uc?export=view&#38;id=0B31-CIvNW1LdVFJrMUZIOHBueVU" width="200px"></div>
+                            <img src="https://drive.google.com/uc?export=view&#38;id=0B31-CIvNW1LdVFJrMUZIOHBueVU" width="200px">
                         </div>
 
                         <h1 id="intro">Introduction</h1>
@@ -92,58 +78,159 @@
                         <h1 id="api">API</h1>
 
                             <h2 id="log-level">Niveau des logs</h2>
+                            <p>Notre framework distingue 3 niveaux de log, et présente une hiérarchie :</p>
+                            <ul>
+                                <li><strong>ERROR:</strong> Au niveau le plus haut, cette configuration enregistre les logs d'erreur.</li>
+                                <li><strong>WARN:</strong> En dessous, cette configuration enregistre les logs d'avertissement et d'erreur.</li>
+                                <li><strong>DEBUG :</strong> Encore en-dessous, cette configuration enregistre les logs de débogage, d'avertissement et d'erreur.</li>
+                                <li><strong>INFO :</strong> Enfin, cette dernière configuration, enregistre les logs d'information, de débogage, d'avertissement et d'erreur.</li>
+                            </ul>
+                            <p>Pour logguer un message, il faut faire appel à la méthode .info(&lt;Message&gt;), .debug(&lt;Message&gt;), .warn(&lt;Message&gt;), .error(&lt;Message&gt;) de l'instance Logger.</p>
+                            <p>Le message peut bien contenir des variables à afficher, et le fonctionnement est similaire à l'appel de System.out.println().</p>
+                            <br />
+                            
+                            <h2 id="log-format">Format des logs</h2>
+                            
+                                <h3>Loggueurs fournis avec le Framework</h3>
+                                <p>Notre framework est livré avec 3 formatteurs de logs, disponibles dans le package com.github.encrypt.ornitholog.formatters :</p>
+                                <ul>
+                                    <li><strong>DateFormatter:</strong> Ce formatteur renvoie la date courante du système afin d'avoir des logs datés.</li>
+                                    <li><strong>LevelFormatter:</strong> Ce formatteur renvoie le niveau actuel du loggueur passé en paramètre.</li>
+                                    <li><strong>ClassFormatter:</strong> Ce formatteur renvoie la classe du loggueur passé en paramètre.</li>
+                                </ul>
+                                
+                                <h3>Créer un nouveau formatteur</h3>
+                                <p>Vous êtes libres de créer un nouveau formatteur ! Pour cela, il suffit de créer une classe héritant de LogFormatter et de lui donner le comportement désiré.</p>
+                                <p>Vérifiant l'Open-Closed Principle, il est aisé d'ajouter des fonctionnalités au framework.</p>
+                                
+                                <h3>Faire appel aux formatteurs</h3>
+                                <p>Le formattage des logs a été pensé suivant le <b>design pattern "Decorator"</b>.</p>
+                                <p>Pour faire appel aux formatteurs, il faut donc les chaîner en les imbriquants les uns dans les autres.</p>
+                                <p><u>Exemple d'appel :</u></p>
+                                <div class="highlight">
+                                    <pre>
+                                        <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger("MaClasse");
+<b>logger.setFormatter(new DateFormatter(new LevelFormatter(new ClassFormatter())));</b>
+                                        </code>
+                                    </pre>
+                                </div>
+                                <br />
+                                
 
+                            <h2 id="log-target">Cible des logs</h2>
+                            <p>Un même message peut donner lieu à plusieurs cibles et trois sont fournies avec ce framework.</p>
+                            <p>Toutes les cibles héritent de la classe LogTarget et suivant le principe OCP il est donc facile d'ajouter vos propres cibles.</p>
+                            
+                                <h3>Console</h3>
+                                <p>La première cible fournie est la console, qui est un niveau basique.</p>
+                                <p>Son utilisation est simple, il n'y a aucun paramètre à lui passer.</p>
+                                
+                                <p><u>Exemple :</u></p>
+                                <div class="highlight">
+                                    <pre>
+                                        <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger("MaClasse");
+<b>logger.addTarget(new LogToConsole());</b>
+                                        </code>
+                                    </pre>
+                                </div>
+                                
+                                <h3>Fichier plat</h3>
+                                <p>Une autre cible fournie est l'écriture des logs dans un fichier plat.</p>
+                                <p>Pour l'utiliser, il faut faire appel à LogToFile en passant en paramètre le chemin vers le fichier d'enregistrement.</p>
+                                <p>Cette cible possède également la méthode setTargetFile(String targetFile) permettant de créer l'objet LogToFile sans lui passer de chemin dans un premier temps.</p>
+                                <p><u>Exemple :</u></p>
+                                <div class="highlight">
+                                    <pre>
+                                        <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger("MaClasse");
+
+LogToFile myTarget = new LogToFile();
+myTarget.setTargetFile("/path/to/my/file");
+logger.addTarget(myTarget);
+
+<i>-- OU --</i>
+
+logger.addTarget(new LogToFile("/path/to/my/file"));
+                                        </code>
+                                    </pre>
+                                </div>
+                                
+                                <h3>Fichier rotatif</h3>
+                                <p></p>
+                                <p>Enfin, la dernière cible fournie permet l'écriture des logs dans un fichier rotatif.</p>
+                                <p>Son mode de fonctionnement est similaiure à celui du fichier plat, hormis le fait que son constructeur prend en second paramètre la taille cible maximale, en <u>octets</u>.</p>
+                                <p>En plus de la méthode setTargetFile(String targetFile), la méthode setMaxFileSize(double maxFileSize) vous permet de spécifier la taille maximale du fichier cible ultérieurement.</p>
+                                <p><u>Exemple :</u></p>
+                                <div class="highlight">
+                                    <pre>
+                                        <code class="language-java" data-lang="java">
+Logger logger = LoggerFactory.getLogger("MaClasse");
+
+LogToFile myTarget = new LogToRotatingFile("/path/to/my/file", 1024000.0);
+myTarget.setTargetFile("/path/to/my/file");
+myTarget.setMaxFileSize(1024000.0);
+logger.addTarget(myTarget);
+
+<i>-- OU --</i>
+
+logger.addTarget(new LogToRotatingFile("/path/to/my/file", 1024000.0));
+                                        </code>
+                                    </pre>
+                                </div>
+                        <br />
+
+                        <h1 id="config">Configuration des Loggers</h1>
+                        
+                            <h2 id="fram-methods">Méthodes fournies</h2>
+                            <p>Plusieurs méthodes sont fournies pour configurer les instances de Logger :</p>
+                            <ul>
+                                <li><strong>addTarget(LogTarget target) :</strong> Permet d'ajouter une cible de logging.</li>
+                                <li><strong>setFormatter(LogFormatter formatter) :</strong> Permet de spécifier le formattage des logs en suivant le design pattern "Decorator".</li>
+                                <li><strong>setLevel(LogLevel level) :</strong> Permet de définir le niveau de logs du Logger.</li>
+                                <li><strong>getLevel() :</strong>Permet de récupérer le niveau d'alerte du Logger.</li>
+                            </ul>
+                            <br />
+                            
+                            <h2 id="properties">Fichier .properties</h2>
+                            <p>Afin de créer automatiquement les instances de Logger et ne plus avoir à paramétrer une instance manuellement, il est possible de renseigner ses paramètres dans un fichier .properties, à mettre à la racine du projet utilisant le framework.</p>
+                            <p>Pour ce faire, les paramètres doivent être sous la forme suivante : package.class:objet.parametre = valeur</p>
+                            <p><u>Exemple de configuration :</u></p>
                             <div class="highlight">
                                 <pre>
                                     <code class="language-java" data-lang="java">
-                                        Il y a 3 niveaux de log:
-                                        Log d'info
-                                        Log de debug
-                                        Log d'erreur
+com.myProject.MyClass:level = DEBUG
+com.myProject.MyClass:formater = DateFormatter
+com.myProject.MyClass:target1 = LogToConsole
+com.myProject.MyClass:target2 = LogToFile
+com.myProject.MyClass:target2.path = "path/to/my/file"
                                     </code>
                                 </pre>
                             </div>
-
-                            <h2 id="log-format">Format des logs</h2>
-
-                                <h3>Comment créer un nouveau format</h3>
-
-                            <h2 id="log-target">Cible des logs</h2>
-
-                            <p>Un même message peut donner lieu à plusieurs cibles:
-
-                            <ul>
-                                <li>Console</li>
-                                <li>Fichier</li>
-                                <li>Base de données</li>
-                                <li>...</li>
-                            </ul>
-
                         <br />
 
-                        <h1 id="config">Configuration du framework</h1>
-
-                            <h2 id="properties">Fichier .properties</h2>
-
-                        <br />
-
-                        <h1 id="uml">UML</h1>
+                        <h1 id="uml">Diagramme UML</h1>
 
                         <p>TODO: mettre une image du diagramme UML.</p>
 
                         <br />
 
-                        <h1 id="license">Licence</h1>
+                        <h1 id="credits">Credits</h1>
+                        
+                            <h2 id="licence">Licence</h2>
+                            <p>Nous livrons ce framework sous licence GPL.</p>
+                            <p>Vous êtes libre de modifier, copier et redistribuer ce programme.</p>
+                            <p>Plus d'informations sur la licence à l'adresse : <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
 
-                        <p>Licence GPL.</p>
-
-                            <h2>Auteurs</h2>
+                            <h2 id="authors">Auteurs</h2>
 
                             <ul>
                                 <li>Vincent Marquet</li>
                                 <li>Patrick Pereira Almeida</li>
                                 <li>Yann Privé</li>
                             </ul>
+                            <p>Étudiants à l'ESIEA Paris en 4A, année 2014/2015.</p>
                     </div>
                 </div>
             </div>
