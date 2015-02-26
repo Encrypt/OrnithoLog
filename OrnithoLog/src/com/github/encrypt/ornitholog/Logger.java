@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Logger {
 
 	ArrayList<LogTarget> targets;
-	private String confFile;
 	private LogLevel level;
 	private LogFormatter formatter;
 	private LogSaveDAO saveDAO;
