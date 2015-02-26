@@ -15,7 +15,7 @@ public class TestLogger {
 	
 	@Before
 	public void before() {
-		this.logger = LoggerFactory.getLogger("com.example.Example");
+		this.logger = LoggerFactory.getLogger("com.example.TestLogger");
 	}
 
 	// test that the className attribute is not null
