@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Logger {
 
 	protected ArrayList<LogTarget> targets;
-	protected LogLevel level;
+	protected LogLevel level = LogLevel.DEBUG;  // DEBUG is default log level
 	private LogFormatter formatter;
 	private LogSaveDAO saveDAO;
 	protected String className;
@@ -47,11 +47,19 @@ public class Logger {
 		this.formatter = formatter;
 	}
 	
+	public LogFormatter getFormatter() {
+		return this.formatter;
+	}
+	
 	public void setLevel(LogLevel level){
 		this.level = level;
 	}
 	
 	public LogLevel getLevel() {
 		return this.level;
+	}
+	
+	public String getClassName() {
+		return this.className;
 	}
 }

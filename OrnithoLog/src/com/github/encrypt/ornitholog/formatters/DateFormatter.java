@@ -15,7 +15,7 @@ public class DateFormatter extends LogFormatter {
 
 	public String appendToMessage(String message) {
 		Date date = new Date();
-		return date.toString() + " " + message;
+		return "[" + date.toString() + "] " + message;
 	}
 
 }
