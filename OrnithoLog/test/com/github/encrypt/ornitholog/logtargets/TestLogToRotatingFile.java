@@ -11,13 +11,11 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.encrypt.ornitholog.LogLevel;
 import com.github.encrypt.ornitholog.Logger;
 import com.github.encrypt.ornitholog.LoggerFactory;
-import com.github.encrypt.ornitholog.formatters.DateFormatter;
 import com.github.encrypt.ornitholog.formatters.LevelFormatter;
 
 public class TestLogToRotatingFile {

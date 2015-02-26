@@ -50,7 +50,7 @@ public class LoggerFactory {
 					if(nested_attributes.equals("level"))
 						readLoglevel(logger, value);
 
-					else if(nested_attributes.equals("formater"))
+					else if(nested_attributes.equals("formatter"))
 						readFormatter(logger, value);
 					
 					else if(nested_attributes.startsWith("target"))
