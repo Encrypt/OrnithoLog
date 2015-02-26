@@ -11,7 +11,7 @@ public class LogToRotatingFile extends LogTarget {
 	private double maxFileSize;
 	
 	// Constructors
-	public LogToRotatingFile(String targetFile, int maxFileSize) {
+	public LogToRotatingFile(String targetFile, double maxFileSize) {
 		this.targetFile = targetFile;
 		this.maxFileSize = maxFileSize; 
 	}
@@ -23,9 +23,8 @@ public class LogToRotatingFile extends LogTarget {
 	// Creates a given file
 	private void createFile(File fileToCreate) {
 		
-		if(fileToCreate.exists()) {
-			System.err.println("The file: " + fileToCreate.getPath() + " already exists!");
-		}
+		if(fileToCreate.exists())
+			return;
 		else {
 			try {
 				fileToCreate.createNewFile();
@@ -58,20 +57,20 @@ public class LogToRotatingFile extends LogTarget {
 			
 		} while(fileExists);
 		
-		// Creates the new log file (.maxFileInt)
-		logFile = new File(targetFile + "." + maxFileInt);
-		createFile(logFile);
-		
 		// Moves each file for targetFile to be the new fresh log file
 		for(int i = maxFileInt - 1 ; i >= 0 ; i--) {
 			
 			if(i == 0)
-				logFile = new File(targetFile);
+				logFile = new File(targetFile);				
 			else
 				logFile = new File(targetFile + "." + i);
 			
 			logFile.renameTo(new File(targetFile + "." + (i+1)));
 		}
+		
+		// Creates the new log file that will actually receive the new logs
+		logFile = new File(targetFile);		
+		createFile(logFile);
 	}
 	
 	// Sets the target file
