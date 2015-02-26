@@ -98,7 +98,7 @@ public class LogToRotatingFile extends LogTarget {
 		// Writes the log line in the file
 		try {
 			FileWriter writer = new FileWriter(targetFile, true);
-			writer.write(logData);
+			writer.write(logData + "\n");
 			writer.close();
 		} catch(IOException e) {
 			System.err.println("Error: " + e.getMessage());
