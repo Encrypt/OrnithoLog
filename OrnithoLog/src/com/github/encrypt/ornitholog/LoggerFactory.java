@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class LoggerFactory {
 
-	private static HashMap<String, Logger> loggers;
+	private static HashMap<String, Logger> loggers = new HashMap<String, Logger>();
 	
 	// Gets a logger, if we give it a name
 	public static Logger getLogger(String className) {
