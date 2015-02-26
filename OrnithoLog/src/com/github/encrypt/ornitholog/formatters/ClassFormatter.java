@@ -17,6 +17,7 @@ public class ClassFormatter extends LogFormatter {
 		this.logger = logger;
 	}
 
+	@Override
 	public String appendToMessage(String message) {
 		return "[" + this.logger.getClassName() + "] " + message;
 	}

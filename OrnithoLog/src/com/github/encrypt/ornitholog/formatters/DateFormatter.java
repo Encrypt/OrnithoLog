@@ -13,6 +13,7 @@ public class DateFormatter extends LogFormatter {
 		super(formatter);
 	}
 
+	@Override
 	public String appendToMessage(String message) {
 		Date date = new Date();
 		return "[" + date.toString() + "] " + message;

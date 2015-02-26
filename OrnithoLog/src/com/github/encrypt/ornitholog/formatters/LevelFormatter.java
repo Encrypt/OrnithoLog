@@ -17,6 +17,7 @@ public class LevelFormatter extends LogFormatter {
 		this.logger = logger;
 	}
 
+	@Override
 	public String appendToMessage(String message) {
 		return "[" + this.logger.getLevel().toString() + "] " + message;
 	}
