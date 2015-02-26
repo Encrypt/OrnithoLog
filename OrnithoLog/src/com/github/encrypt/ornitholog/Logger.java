@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Logger {
 
-	ArrayList<LogTarget> targets;
-	private LogLevel level;
+	protected ArrayList<LogTarget> targets;
+	protected LogLevel level;
 	private LogFormatter formatter;
 	private LogSaveDAO saveDAO;
 	protected String className;
