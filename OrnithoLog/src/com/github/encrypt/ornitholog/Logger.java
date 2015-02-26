@@ -21,22 +21,29 @@ public class Logger {
 	
 	public void debug(String message){
 		if(level.ordinal() >= LogLevel.DEBUG.ordinal())
-			saveDAO.save(this.formatter.format(message));
+			this.save(message);
 	}
 	
 	public void info(String message){
 		if(level.ordinal() >= LogLevel.INFO.ordinal())
-			saveDAO.save(this.formatter.format(message));
+			this.save(message);
 	}
 	
 	public void warn(String message){
 		if(level.ordinal() >= LogLevel.WARN.ordinal())
-			saveDAO.save(this.formatter.format(message));
+			this.save(message);
 	}
 	
 	public void error(String message){
 		if(level.ordinal() >= LogLevel.ERROR.ordinal())
-			saveDAO.save(this.formatter.format(message));
+			this.save(message);
+	}
+	
+	private void save(String message) {
+		if (this.formatter != null)
+			this.saveDAO.save(this.formatter.format(message));
+		else
+			this.saveDAO.save(message);
 	}
 	
 	public void addTarget(LogTarget target){
