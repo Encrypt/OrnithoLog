@@ -19,28 +19,21 @@ public class Logger {
 		this.className = className;
 	}
 	
-	private void saveToTargets(String string){
-		String tmp = new String();
-		tmp = formatter.format(string);
-		saveDAO.save(tmp);
-	}
-	
-	
-	public void debug(String string){
+	public void debug(String message){
 		if(level.equals(LogLevel.DEBUG) || level.equals(LogLevel.INFO)){
-			saveToTargets(string);
+			saveDAO.save(this.formatter.format(message));
 		}
 	}
 	
-	public void info(String string){
+	public void info(String message){
 		if(level.equals(LogLevel.INFO)){
-			saveToTargets(string);
+			saveDAO.save(this.formatter.format(message));
 		}
 	}
 	
-	public void error(String string){
+	public void error(String message){
 		if(level.equals(LogLevel.ERROR) || level.equals(LogLevel.DEBUG) || level.equals(LogLevel.INFO)){
-			saveToTargets(string);
+			saveDAO.save(this.formatter.format(message));
 		}
 	}
 	
