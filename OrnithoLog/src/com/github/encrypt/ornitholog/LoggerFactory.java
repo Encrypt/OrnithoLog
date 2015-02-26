@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class LoggerFactory {
 
 	private static HashMap<String, Logger> loggers = new HashMap<String, Logger>();
+	private static String propertiesFilePath = "ornitholog.properties";
 	
 	// Gets a logger, if we give it a name
 	public static Logger getLogger(String className) {
@@ -33,7 +34,7 @@ public class LoggerFactory {
 		
 		// Reads the properties file
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("properties"));
+			BufferedReader br = new BufferedReader(new FileReader(propertiesFilePath));
 	
 			while ((readLine = br.readLine()) != null) {
 				try {
@@ -172,5 +173,10 @@ public class LoggerFactory {
 			((LogToRotatingFile)logTarget).setMaxFileSize(Double.parseDouble(doubleSize));
 		else
 			System.err.println("Error: Can't set maxFileSize " + doubleSize + " to target: " + logTarget);
+	}
+	
+	// the following function is useful only for unit testing purposes
+	protected static void setPropertiesFilePath(String propertiesFilePath) {
+		LoggerFactory.propertiesFilePath = propertiesFilePath;
 	}
 }
