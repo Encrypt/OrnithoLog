@@ -1,5 +1,6 @@
 package com.github.encrypt.ornitholog;
 
+import com.github.encrypt.ornitholog.formatters.*;
 import com.github.encrypt.ornitholog.logtargets.*;
 
 import java.io.BufferedReader;
@@ -47,6 +48,9 @@ public class LoggerFactory {
 					// Switch on the value of the 1st token before "="
 					if(nested_attributes.equals("level"))
 						readLoglevel(logger, value);
+
+					else if(nested_attributes.equals("formater"))
+						readFormatter(logger, value);
 					
 					else if(nested_attributes.startsWith("target"))
 						readTarget(logger, nested_attributes, value);
@@ -83,6 +87,19 @@ public class LoggerFactory {
 		}
 	}
 	
+	// Reads the formater
+	private static void readFormatter(Logger logger, String value) {
+		try {
+			logger.setFormatter((LogFormatter)Class.forName(value).newInstance());
+		}
+		catch(ClassNotFoundException e) {
+			System.err.println("Error: The LogFormatter " + value + " doesn't exist.");
+		}
+		catch (InstantiationException | IllegalAccessException e) {
+			System.err.println("Error: The LogFormatter " + value + " couldn't be instanciated.");
+		}
+	}
+	
 	// Reads the target
 	private static void readTarget(Logger logger, String nested_attributes, String value) {
 		
@@ -90,10 +107,13 @@ public class LoggerFactory {
 		
 		// If there are two arguments with "path" -> sets the target path
 		if(dotSplit.length == 2) {
-			if(dotSplit[1].equals("path")) {
-				int targetValue = Integer.parseInt(dotSplit[0].substring(6));
+		
+			int targetValue = Integer.parseInt(dotSplit[0].substring(6));
+			
+			if(dotSplit[1].equals("path"))
 				readTargetPath(logger, targetValue, value);
-			}
+			if(dotSplit[1].equals("maxSize"))
+				readTargetMaxFileSize(logger, targetValue, value);
 		}
 		
 		// Else, there is no dot -> new target given in the file
@@ -142,5 +162,15 @@ public class LoggerFactory {
 			((LogToRotatingFile)logTarget).setTargetFile(path.replace("\"", ""));
 		else
 			System.err.println("Error: Can't set a path to target: " + logTarget);
+	}
+	
+	// Reads the target maxFileSize
+	private static void readTargetMaxFileSize(Logger logger, int targetIndex, String doubleSize) {
+		LogTarget logTarget = logger.targets.get(targetIndex);
+		
+		if(logTarget instanceof LogToRotatingFile)
+			((LogToRotatingFile)logTarget).setMaxFileSize(Double.parseDouble(doubleSize));
+		else
+			System.err.println("Error: Can't set maxFileSize " + doubleSize + " to target: " + logTarget);
 	}
 }
