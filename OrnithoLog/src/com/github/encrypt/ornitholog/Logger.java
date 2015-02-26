@@ -27,7 +27,7 @@ public class Logger {
 	
 	
 	public void debug(String string){
-		if(level.equals(LogLevel.DEBUG)){
+		if(level.equals(LogLevel.DEBUG) || level.equals(LogLevel.INFO)){
 			saveToTargets(string);
 		}
 	}
@@ -39,7 +39,7 @@ public class Logger {
 	}
 	
 	public void error(String string){
-		if(level.equals(LogLevel.ERROR)){
+		if(level.equals(LogLevel.ERROR) || level.equals(LogLevel.DEBUG) || level.equals(LogLevel.INFO)){
 			saveToTargets(string);
 		}
 	}
