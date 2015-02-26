@@ -88,7 +88,7 @@ public class LoggerFactory {
 		if(dotSplit.length == 2) {
 			if(dotSplit[1].equals("path")) {
 				int targetValue = Integer.parseInt(dotSplit[0].substring(6));
-				readTargetPath(logger, targetValue);
+				readTargetPath(logger, targetValue, attributes[1]);
 			}
 		}
 		
@@ -129,9 +129,14 @@ public class LoggerFactory {
 	}
 	
 	// Reads the target path
-	private static void readTargetPath(Logger logger, int targetIndex) {
+	private static void readTargetPath(Logger logger, int targetIndex, String path) {
 		LogTarget logTarget = logger.targets.get(targetIndex);
-		// logTarget.setTargetFile();
-		// TODO
+		
+		if(logTarget instanceof LogToFile)
+			((LogToFile)logTarget).setTargetFile(path.replace("\"", ""));
+		else if(logTarget instanceof LogToRotatingFile)
+			((LogToRotatingFile)logTarget).setTargetFile(path.replace("\"", ""));
+		else
+			System.err.println("Error: Can't set a path to target: " + logTarget);
 	}
 }
